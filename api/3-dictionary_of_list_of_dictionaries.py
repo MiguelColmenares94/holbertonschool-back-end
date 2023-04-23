@@ -37,8 +37,6 @@ def main():
     with open("todo_all_employees.json", "w") as f:
         json.dump(tasks, f)
 
-    print(f"Data exported to {f.name}")
-
 
 if __name__ == "__main__":
     main()
