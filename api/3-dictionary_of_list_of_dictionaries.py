@@ -1,8 +1,11 @@
+#!/usr/bin/python3
+"""get data from API an save to JSON file"""
 import json
 import requests
 
 
 def main():
+    """get data from API and save it to JSON file"""
     url_base = "https://jsonplaceholder.typicode.com"
     response_users = requests.get(f"{url_base}/users")
 
