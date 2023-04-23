@@ -39,7 +39,8 @@ def main():
     with open(csv_file, mode='w') as csv_file:
         fieldnames = ["USER_ID", "USERNAME",
                       "TASK_COMPLETED_STATUS", "TASK_TITLE"]
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames,
+                                quoting=csv.QUOTE_ALL)
         # writer.writeheader()
 
         for task in todos:
