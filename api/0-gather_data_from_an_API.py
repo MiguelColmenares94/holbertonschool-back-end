@@ -10,8 +10,6 @@ from sys import argv, stderr, exit
 
 def main():
     if len(argv) < 2:
-        print(f"To use this script the input should be: \
-              python3 file_name.py employeeID", file=stderr)
         exit(1)
 
     employee_id = int(argv[1])
@@ -31,10 +29,10 @@ def main():
     if response_name.status_code == 200:
         employee_data = response_name.json()
         if "name" in employee_data:
-            employee_name = employee_data["name"]
+            employee_name = employee_data.get("name")
 
-        print(f"Employee {employee_name} is done with \
-                tasks({num_completed_tasks}/{total_tasks}): ")
+        print("Employee {} is done with tasks({}/{}):"
+              .format(employee_name, num_completed_tasks, total_tasks))
         for task in completed_tasks:
             print("\t", task['title'])
     else:
