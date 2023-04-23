@@ -39,15 +39,15 @@ def main():
     with open(csv_file, mode='w') as csv_file:
         fieldnames = ["USER_ID", "USERNAME",
                       "TASK_COMPLETED_STATUS", "TASK_TITLE"]
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         # writer.writeheader()
 
         for task in todos:
             writer.writerow({
-                "USER_ID": employee_id,
-                "USERNAME": employee_username,
-                "TASK_COMPLETED_STATUS": task.get("completed"),
-                "TASK_TITLE": task.get("title")
+                "USER_ID": '{}'.format(employee_id),
+                "USERNAME": '{}'.format(employee_username),
+                "TASK_COMPLETED_STATUS": '{}'.format(task.get("completed")),
+                "TASK_TITLE": '{}'.format(task.get("title"))
             })
 
     print("Data exported to {}".format(csv_file))
