@@ -4,9 +4,9 @@ Script that use
 https://jsonplaceholder.typicode.com/guide/
 to get information and export it as csv
 """
+import csv
 import requests
 from sys import argv, stderr, exit
-import csv
 
 
 def main():
@@ -15,8 +15,8 @@ def main():
         exit(1)
 
     employee_id = int(argv[1])
-    url_todo = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-    response_todo = requests.get(url_todo)
+    url_to = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    response_todo = requests.get(url_to)
     url_username = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     response_username = requests.get(url_username)
 
@@ -40,7 +40,7 @@ def main():
         fieldnames = ["USER_ID", "USERNAME",
                       "TASK_COMPLETED_STATUS", "TASK_TITLE"]
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
+        # writer.writeheader()
 
         for task in todos:
             writer.writerow({
