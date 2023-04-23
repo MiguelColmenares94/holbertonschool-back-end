@@ -1,3 +1,7 @@
+#!usr/bin/python2
+"""
+Get data from an API and export it to a JSON file
+"""
 import json
 import requests
 
