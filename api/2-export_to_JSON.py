@@ -4,8 +4,8 @@ Script that use
 https://jsonplaceholder.typicode.com/guide/
 to get information and export it as csv
 """
-import requests
 import json
+import requests
 from sys import argv, stderr, exit
 
 
