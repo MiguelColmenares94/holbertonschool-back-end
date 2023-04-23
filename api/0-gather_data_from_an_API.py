@@ -19,7 +19,6 @@ def main():
     url_name = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     response_name = requests.get(url_name)
 
-
     if response.status_code == 200:
         todos = response.json()
         total_tasks = len(todos)
@@ -27,7 +26,6 @@ def main():
         num_completed_tasks = len(completed_tasks)
     else:
         print("Error fetching TODO list")
-
 
     if response_name.status_code == 200:
         employee_data = response_name.json()
