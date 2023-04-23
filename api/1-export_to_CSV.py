@@ -15,25 +15,25 @@ def main():
         exit(1)
 
     employee_id = int(argv[1])
-    url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-    response = requests.get(url)
-    url_name = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    response_name = requests.get(url_name)
+    url_todo = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    response_todo = requests.get(url_todo)
+    url_username = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    response_username = requests.get(url_username)
 
-    if response.status_code == 200:
-        todos = response.json()
+    if response_todo.status_code == 200:
+        todos = response_todo.json()
         total_tasks = len(todos)
         completed_tasks = [todo for todo in todos if todo['completed']]
         num_completed_tasks = len(completed_tasks)
     else:
         print("Error fetching TODO list")
 
-    if response_name.status_code == 200:
-        employee_data = response_name.json()
-        if "name" in employee_data:
-            employee_name = employee_data.get("name")
+    if response_username.status_code == 200:
+        employee_data = response_username.json()
+        if "username" in employee_data:
+            employee_username = employee_data.get("username")
     else:
-        print("Error fetching employee name")
+        print("Error fetching employee username")
 
     csv_file = "{}.csv".format(employee_id)
     with open(csv_file, mode='w') as csv_file:
@@ -43,11 +43,9 @@ def main():
         writer.writeheader()
 
         for task in todos:
-            task_title = task.get("title")
-            task_status = "True" if task['completed'] else "False"
             writer.writerow({
                 "USER_ID": employee_id,
-                "USERNAME": employee_name,
+                "USERNAME": employee_username,
                 "TASK_COMPLETED_STATUS": task.get("completed"),
                 "TASK_TITLE": task.get("title")
             })
