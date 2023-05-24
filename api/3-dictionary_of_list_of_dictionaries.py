@@ -1,42 +1,38 @@
 #!/usr/bin/python3
-"""get data from API an save to JSON file"""
+"""This module gathers data from an API"""
 import json
 import requests
 
-
-def main():
-    """get data from API and save it to JSON file"""
-    url_base = "https://jsonplaceholder.typicode.com"
-    response_users = requests.get(f"{url_base}/users")
-
-    if response_users.status_code == 200:
-        users = response_users.json()
-    else:
-        print("Error fetching employee data")
-
-    tasks = {}
-    for user in users:
-        user_id = str(user["id"])
-        response_todos = requests.get(f"{url_base}/todos?userId={user_id}")
-        if response_todos.status_code == 200:
-            todos = response_todos.json()
-        else:
-            print(f"Error fetching TODO list for user {user_id}")
-            continue
-        tasks[user_id] = list(
-            map(
-                lambda todo: {
-                    "username": user["username"],
-                    "task": todo["title"],
-                    "completed": todo["completed"]
-                },
-                todos
-            )
-        )
-
-    with open("todo_all_employees.json", "w") as f:
-        json.dump(tasks, f)
-
-
 if __name__ == "__main__":
-    main()
+
+    # Make requests in parallel to reduce overhead
+    session = requests.Session()
+    response_todos = session.get("https://jsonplaceholder.typicode.com/todos")
+    response_users = session.get("https://jsonplaceholder.typicode.com/users")
+
+    # Check if the requests were successful (status code 200)
+    if response_todos.status_code != 200 or response_users.status_code != 200:
+        print("Failed to fetch data.")
+        print(f"TODOS response status code: {response_todos.status_code}")
+        print(f"Users response status code: {response_users.status_code}")
+        exit(1)
+
+    todos = response_todos.json()
+    users = response_users.json()
+
+    todo_all_employees = {}
+    for user in users:
+        user_id = user.get("id")
+        filtered_todos = filter(lambda x: x.get("userId") == user_id, todos)
+        todo_all_employees[user_id] = [
+            {
+                "username": user.get("username"),
+                "task": todo["title"],
+                "completed": todo["completed"]
+            } for todo in filtered_todos
+        ]
+
+    # Export to JSON region
+    filename = "todo_all_employees.json"
+    with open(filename, mode="w") as file:
+        json.dump(todo_all_employees, file, indent=4)
