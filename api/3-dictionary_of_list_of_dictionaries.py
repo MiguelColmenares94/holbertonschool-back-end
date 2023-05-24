@@ -23,14 +23,17 @@ if __name__ == "__main__":
     todo_all_employees = {}
     for user in users:
         user_id = user.get("id")
-        filtered_todos = filter(lambda x: x.get("userId") == user_id, todos)
-        todo_all_employees[user_id] = [
-            {
+        todo_all_employees[user_id] = []
+
+    for todo in todos:
+        user_id = todo.get("userId")
+        if user_id in todo_all_employees:
+            user = [user for user in users if user["id"] == user_id][0]
+            todo_all_employees[user_id].append({
                 "username": user.get("username"),
                 "task": todo["title"],
                 "completed": todo["completed"]
-            } for todo in filtered_todos
-        ]
+            })
 
     # Export to JSON region
     filename = "todo_all_employees.json"
